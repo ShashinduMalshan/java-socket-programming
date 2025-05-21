@@ -9,6 +9,7 @@ import java.util.Scanner;
  * A simple chat client that connects to a server and sends messages.
  * The client reads user input from the console and sends it to the server.
  * Type 'exit' to disconnect from the server.
+ * shasidu malshan
  */
 public class Client {
     // Server connection details

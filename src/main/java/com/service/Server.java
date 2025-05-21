@@ -31,6 +31,7 @@ public class Server {
                     System.out.println("Client connected from: " + clientSocket.getInetAddress());
                     
                     // Message handling loop for the current client
+
                     while (true) {
                         // Read message from client
                         String message = inputStream.readUTF();
