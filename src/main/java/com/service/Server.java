@@ -22,7 +22,7 @@ public class Server {
 
             // Main server loop - keeps running to accept multiple clients
             while (true) {
-                // Accept and handle client connection s
+                // Accept and handle client connection
                 // Using try-with-resources to automatically close client socket and input stream
                 try (Socket clientSocket = serverSocket.accept();
                      DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream())) {
