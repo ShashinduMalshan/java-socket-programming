@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Socket Chat Application Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .section {
+            background-color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .code-block {
+            background-color: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            color: #d4d4d4;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .class {
+            color: #4ec9b0;
+        }
+
+        .code-title {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .note {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .error-note {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .success-note {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .code-explanation {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-list {
+            list-style-type: none;
+        }
+
+        .feature-list li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+        }
+
+        .error-list {
+            list-style-type: none;
+        }
+
+        .error-list li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .error-list li::before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Java Socket Chat Application</h1>
+            <p>A simple client-server chat application using Java Sockets</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section">
+            <h2>Implementation Details</h2>
+            
+            <div class="code-title">Server Implementation (Server.java)</div>
+            <div class="code-block">
+                <pre><span class="keyword">package</span> com.service;
+
+<span class="keyword">import</span> java.io.DataInputStream;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.net.ServerSocket;
+<span class="keyword">import</span> java.net.Socket;
+
+<span class="keyword">public class</span> <span class="class">Server</span> {
+    <span class="keyword">private static final</span> <span class="keyword">int</span> PORT = <span class="string">5000</span>;
+
+    <span class="keyword">public static void</span> main(String[] args) {
+        <span class="keyword">try</span> (ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(PORT)) {
+            System.out.println(<span class="string">"Server started on port "</span> + PORT);
+            System.out.println(<span class="string">"Waiting for client connection..."</span>);
+
+            <span class="keyword">while</span> (<span class="keyword">true</span>) {
+                <span class="keyword">try</span> (Socket clientSocket = serverSocket.accept();
+                     DataInputStream inputStream = <span class="keyword">new</span> DataInputStream(
+                         clientSocket.getInputStream())) {
+                    
+                    System.out.println(<span class="string">"Client connected from: "</span> + 
+                        clientSocket.getInetAddress());
+                    
+                    <span class="keyword">while</span> (<span class="keyword">true</span>) {
+                        String message = inputStream.readUTF();
+                        System.out.println(<span class="string">"Received: "</span> + message);
+                        
+                        <span class="keyword">if</span> (<span class="string">"exit"</span>.equalsIgnoreCase(message)) {
+                            System.out.println(<span class="string">"Client requested exit"</span>);
+                            <span class="keyword">break</span>;
+                        }
+                    }
+                } <span class="keyword">catch</span> (IOException e) {
+                    System.err.println(<span class="string">"Error handling client: "</span> + e.getMessage());
+                }
+            }
+        } <span class="keyword">catch</span> (IOException e) {
+            System.err.println(<span class="string">"Server error: "</span> + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            </div>
+
+            <div class="code-explanation">
+                <h3>Server Code Explanation:</h3>
+                <ul class="feature-list">
+                    <li><strong>Port Configuration:</strong> The server listens on port 5000 for incoming connections</li>
+                    <li><strong>Resource Management:</strong> Uses try-with-resources for automatic resource cleanup</li>
+                    <li><strong>Client Handling:</strong> Accepts client connections in an infinite loop</li>
+                    <li><strong>Message Processing:</strong> Reads messages using DataInputStream</li>
+                    <li><strong>Exit Handling:</strong> Allows clients to disconnect by sending "exit"</li>
+                </ul>
+            </div>
+
+            <div class="code-title">Client Implementation (Client.java)</div>
+            <div class="code-block">
+                <pre><span class="keyword">package</span> com.service;
+
+<span class="keyword">import</span> java.io.DataOutputStream;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.net.Socket;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="class">Client</span> {
+    <span class="keyword">private static final</span> String HOST = <span class="string">"localhost"</span>;
+    <span class="keyword">private static final</span> <span class="keyword">int</span> PORT = <span class="string">5000</span>;
+
+    <span class="keyword">public static void</span> main(String[] args) {
+        <span class="keyword">try</span> (Socket socket = <span class="keyword">new</span> Socket(HOST, PORT);
+             DataOutputStream outputStream = <span class="keyword">new</span> DataOutputStream(
+                 socket.getOutputStream());
+             Scanner scanner = <span class="keyword">new</span> Scanner(System.in)) {
+
+            System.out.println(<span class="string">"Connected to server at "</span> + HOST + <span class="string">":"</span> + PORT);
+            System.out.println(<span class="string">"Type your messages (type 'exit' to quit):"</span>);
+            
+            <span class="keyword">while</span> (<span class="keyword">true</span>) {
+                String message = scanner.nextLine().trim();
+                
+                <span class="keyword">if</span> (message.isEmpty()) {
+                    <span class="keyword">continue</span>;
+                }
+
+                outputStream.writeUTF(message);
+                outputStream.flush();
+
+                <span class="keyword">if</span> (<span class="string">"exit"</span>.equalsIgnoreCase(message)) {
+                    System.out.println(<span class="string">"Disconnecting from server..."</span>);
+                    <span class="keyword">break</span>;
+                }
+            }
+        } <span class="keyword">catch</span> (IOException e) {
+            System.err.println(<span class="string">"Client error: "</span> + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            </div>
+
+            <div class="code-explanation">
+                <h3>Client Code Explanation:</h3>
+                <ul class="feature-list">
+                    <li><strong>Connection Setup:</strong> Connects to localhost on port 5000</li>
+                    <li><strong>Resource Management:</strong> Uses try-with-resources for automatic cleanup</li>
+                    <li><strong>User Input:</strong> Uses Scanner to read user input from console</li>
+                    <li><strong>Message Sending:</strong> Sends messages using DataOutputStream</li>
+                    <li><strong>Input Validation:</strong> Skips empty messages</li>
+                </ul>
+            </div>
+
+            <div class="error-note">
+                <h3>Common Errors and Solutions:</h3>
+                <ul class="error-list">
+                    <li><strong>BindException:</strong> Port 5000 is already in use
+                        <br>Solution: Close the previous server instance or use a different port</li>
+                    <li><strong>Connection Refused:</strong> Server is not running
+                        <br>Solution: Start the server before the client</li>
+                    <li><strong>Message Not Received:</strong> Forgot to call flush()
+                        <br>Solution: Always call flush() after writeUTF()</li>
+                </ul>
+            </div>
+
+            <div class="success-note">
+                <h3>Best Practices Implemented:</h3>
+                <ul class="feature-list">
+                    <li>Proper resource management with try-with-resources</li>
+                    <li>Input validation and trimming</li>
+                    <li>Clear error messages and handling</li>
+                    <li>Graceful connection termination</li>
+                    <li>Clean code structure and organization</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Introduction to Sockets</h2>
+            <p>In Java network programming, a <strong>socket</strong> is one end-point of a two-way communication link between two programs running on a network:contentReference[oaicite:0]{index=0}. Sockets enable data exchange between a client and server application, even if they run on different machines. Java provides classes such as <code>java.net.Socket</code> (for clients) and <code>java.net.ServerSocket</code> (for servers) to create and manage socket connections:contentReference[oaicite:1]{index=1}. Each socket is identified by a combination of transport protocol, IP address, and port number:contentReference[oaicite:2]{index=2}. This combination is how the network identifies each socket endpoint.</p>
+        </section>
+        <section>
+            <h2>TCP vs UDP</h2>
+            <p>The two most common transport protocols used with sockets are <strong>TCP</strong> (Transmission Control Protocol) and <strong>UDP</strong> (User Datagram Protocol). TCP is connection-oriented and reliable: it establishes a connection via a handshake and ensures no data is lost or reordered:contentReference[oaicite:3]{index=3}. This is why client-server applications often rely on TCP for reliable communication:contentReference[oaicite:4]{index=4}. In contrast, UDP is unreliable and connectionless: it does not establish a formal connection before sending data:contentReference[oaicite:5]{index=5}. This makes UDP faster but means some packets might be lost or arrive out of order. UDP is often used in applications (like video streaming or online gaming) where low latency is more important than guaranteed delivery.</p>
+        </section>
+        <section>
+            <h2>The Client-Server Model</h2>
+            <p>In a client-server model, a <em>server</em> program provides a service (such as data processing or file hosting) and listens on a known port for incoming client requests:contentReference[oaicite:6]{index=6}. A <em>client</em> program initiates the connection to the server and requests the service. The roles are distinct: the server waits and serves, while clients send requests and await responses. Network communication must be reliable: data sent by the server should not be dropped and must arrive in the order sent:contentReference[oaicite:7]{index=7}. Data reliability (order and completeness) is a key feature of TCP.</p>
+            <p>:contentReference[oaicite:8]{index=8} The figure above illustrates a basic client-server architecture. Each side (client and server) runs its own software and hardware but uses sockets to communicate over the network. The server listens on a specific port on its IP address. Clients connect by specifying the server's address and port, and then data can be exchanged in both directions. Because TCP is connection-oriented, the client and server each bind a socket to the connection after a successful handshake:contentReference[oaicite:9]{index=9}. Once connected, the client and server can exchange data in both directions using the socket's input and output streams.</p>
+        </section>
+        <section>
+            <h2>Java Socket Classes</h2>
+            <p>Java's standard library provides the <code>Socket</code> and <code>ServerSocket</code> classes for TCP connections. A <code>ServerSocket</code> listens on a port for client connections, while a <code>Socket</code> represents a TCP connection once established:contentReference[oaicite:10]{index=10}. When a client connects to the server's <code>ServerSocket</code>, the server calls <code>accept()</code> to obtain a new <code>Socket</code> for that client. Data can then be read from and written to the client through this socket's input and output streams. (For UDP, Java provides <code>java.net.DatagramSocket</code> and <code>java.net.DatagramPacket</code> for connectionless communication.)</p>
+        </section>
+        <section>
+            <h2>Simple Server Example</h2>
+            <p>Below is a simple Java TCP server example. It listens on a port, accepts one client connection, reads a message, and sends a response:</p>
+            <pre><code>import java.net.ServerSocket; import java.net.Socket; import java.io.PrintWriter; import java.io.BufferedReader; import java.io.InputStreamReader; import java.io.IOException; public class SimpleServer {
+public static void main(String[] args) {
+int port = 12345;
+try {
+// 1. Create a ServerSocket to listen on the specified port
+ServerSocket serverSocket = new ServerSocket(port);
+System.out.println("Server listening on port " + port);
+pgsql
+Copy
+Edit
+        // 2. Wait for a client to connect
+        Socket clientSocket = serverSocket.accept();
+        System.out.println("Client connected");
+
+        // 3. Create reader and writer for the socket
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        // 4. Read a line of text from the client
+        String clientMessage = in.readLine();
+        System.out.println("Received from client: " + clientMessage);
+
+        // 5. Send a response to the client
+        out.println("Hello from server!");
+
+        // 6. Close resources
+        in.close();
+        out.close();
+        clientSocket.close();
+        serverSocket.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+}</code></pre>
+            <p>Explanation of the server code above:</p>
+            <ul>
+                <li><code>new ServerSocket(port)</code>: Creates a TCP server socket bound to the given port. This socket listens for incoming client connections.</li>
+                <li><code>serverSocket.accept()</code>: Blocks and waits until a client connects. Once a client connects, it returns a new <code>Socket</code> for communication with that client.</li>
+                <li>We wrap the socket's input/output streams in a <code>BufferedReader</code> and <code>PrintWriter</code> to easily read text lines and send responses.</li>
+                <li><code>in.readLine()</code>: Reads a line of text sent by the client. In this example, the server prints it to its console.</li>
+                <li><code>out.println(...)</code>: Sends a text response back to the client. The client program can read this as a line.</li>
+                <li>Finally, we close the input/output streams and sockets to free network resources. Closing the <code>Socket</code> ends the connection with that client.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Simple Client Example</h2>
+            <p>Here is a corresponding client that connects to the server above, sends a message, and prints the server's response:</p>
+            <pre><code>import java.net.Socket; import java.io.PrintWriter; import java.io.BufferedReader; import java.io.InputStreamReader; import java.io.IOException; public class SimpleClient {
+public static void main(String[] args) {
+String serverAddress = "localhost"; // server IP or hostname
+int port = 12345;
+try {
+// 1. Connect to the server at given address and port
+Socket socket = new Socket(serverAddress, port);
+System.out.println("Connected to server");
+pgsql
+Copy
+Edit
+        // 2. Create reader and writer for the socket
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        // 3. Send a message to the server
+        out.println("Hello from client!");
+
+        // 4. Read the response from the server
+        String response = in.readLine();
+        System.out.println("Server says: " + response);
+
+        // 5. Close resources
+        in.close();
+        out.close();
+        socket.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+}</code></pre>
+            <p>Explanation of the client code:</p>
+            <ul>
+                <li><code>new Socket(serverAddress, port)</code>: Creates a TCP socket and connects it to the server's address and port.</li>
+                <li>The client also wraps streams in <code>PrintWriter</code> and <code>BufferedReader</code> for easy text communication.</li>
+                <li><code>out.println("Hello from client!")</code>: Sends a line of text to the server.</li>
+                <li><code>in.readLine()</code>: Reads the line sent back by the server and prints it.</li>
+                <li>Finally, we close the socket and streams. This terminates the connection.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Multi-Client (Multithreaded) Server</h2>
+            <p>To handle multiple clients at the same time, a server can use threading. A <em>multithreaded server</em> listens for connections in a loop and spawns a new thread to handle each client:contentReference[oaicite:11]{index=11}. This way, the server can communicate with many clients concurrently without making one client wait for another.</p>
+            <pre><code>// In the main server program: ServerSocket serverSocket = new ServerSocket(12345); System.out.println("Multithreaded server listening..."); while (true) { // Accept a new client Socket clientSocket = serverSocket.accept(); // Handle each client in a new thread new Thread(new ClientHandler(clientSocket)).start(); } // Example ClientHandler class:
+class ClientHandler implements Runnable {
+private Socket clientSocket;
+public ClientHandler(Socket socket) {
+this.clientSocket = socket;
+}
+public void run() {
+try {
+BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+String message = in.readLine();
+System.out.println("Received: " + message);
+out.println("Response to client");
+clientSocket.close();
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+}
+</code></pre>
+            <p>In this example, the server loop (<code>while(true)</code>) calls <code>accept()</code> repeatedly. Each time a client connects, we create a new <code>ClientHandler</code> object (implementing <code>Runnable</code>) and start a new <code>Thread</code> with it. The <code>ClientHandler</code> reads from and writes to the individual client socket. Because each client is handled in its own thread, the main server can immediately go back to listening for more clients:contentReference[oaicite:12]{index=12}.</p>
+        </section>
+        <section>
+            <h2>Communication Diagrams</h2>
+            <p>Network communication follows defined protocols. For TCP, this includes a three-way handshake to establish a connection: the client sends a SYN, the server replies with SYN-ACK, and the client finishes with an ACK before data transfer begins. The diagram below shows the general idea of establishing a TCP connection:</p>
+            <p>:contentReference[oaicite:13]{index=13} In this TCP handshake diagram, the client (on the left) and server (on the right) exchange SYN and ACK packets (blue arrows) to establish a connection. After the handshake, data (green arrows) can flow reliably between them. Note that UDP does not use this handshake; it simply sends datagrams without such setup.</p>
+        </section>
+        <section>
+            <h2>Practical Exercises</h2>
+            <p>Here are some exercises to practice Java socket programming:</p>
+            <ol>
+                <li><strong>Echo Server:</strong> Write a Java server that echoes back any message sent by the client. For example, if the client sends "Hello", the server should respond with "Echo: Hello". <em>Expected outcome:</em> The client prints "Server says: Echo: Hello" after sending the message.</li>
+                <li><strong>Multi-Client Chat:</strong> Modify the multithreaded server above so that it broadcasts a received message to all connected clients. <em>Expected:</em> When one client sends "Hi", all other clients receive something like "Client says: Hi".</li>
+                <li><strong>Time Server:</strong> Create a server that sends the current date and time to each client when they connect. The client should print the time. <em>Expected:</em> The client console displays the current timestamp received from the server.</li>
+                <li><strong>UDP Client-Server:</strong> Try writing a simple UDP server/client using <code>DatagramSocket</code>. The server should receive a datagram, print it, and send a reply. <em>Expected:</em> The client prints the reply received from the server.</li>
+            </ol>
+        </section>
+        <section>
+            <h2>Debugging Tips and Common Errors</h2>
+            <p>Socket programming can raise common errors. For example, <code>java.net.BindException</code> means the chosen port is already in use (try a different port or stop the other service). A <code>ConnectException</code> ("Connection refused") means the server isn't running or listening on that port. Check firewall settings or network connectivity if clients cannot reach the server. Always close sockets and streams in a <code>finally</code> block or use try-with-resources to avoid resource leaks.</p>
+            <p>Other tips: Print debug messages to trace program flow (e.g. when connections open or data is received). Use exception stack traces to find where errors occur. Verify that the client uses the correct server address and port. Remember that <code>readLine()</code> will block if the other side doesn't send a line terminator. If you see unexpected behavior, ensure both client and server agree on data formats and protocols (for instance, both should use the same text encoding).</p>
+        </section>
+        <section>
+            <h2>Further Reading</h2>
+            <ul>
+                <li><a href="https://docs.oracle.com/javase/tutorial/networking/sockets/index.html" target="_blank">Oracle Java Tutorials: Networking (Sockets)</a></li>
+                <li><a href="https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html" target="_blank"><code>java.net.Socket</code> API</a></li>
+                <li><a href="https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html" target="_blank"><code>java.net.ServerSocket</code> API</a></li>
+                <li><a href="https://www.baeldung.com/a-guide-to-java-sockets" target="_blank">Baeldung: A Guide to Java Sockets</a></li>
+                <li><a href="https://www.geeksforgeeks.org/socket-programming-in-java/" target="_blank">GeeksforGeeks: Java Socket Programming</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
